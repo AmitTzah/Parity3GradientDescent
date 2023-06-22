@@ -9,29 +9,6 @@
 import numpy as np
 
 
-# XOR data and expected outputs
-# 8 possible inputs since there are 8 possible combinations of 3 bits
-inputs = np.array([[0, 0, 0],
-                   [0, 0, 1],
-                   [0, 1, 0],
-                   [0, 1, 1],
-                   [1, 0, 0],
-                   [1, 0, 1],
-                   [1, 1, 0],
-                   [1, 1, 1]])
-
-outputs = np.array([[0],
-                    [1],
-                    [1],
-                    [0],
-                    [1],
-                    [0],
-                    [0],
-                    [1]])
-
-# Sigmoid function and its derivative
-
-
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -50,7 +27,7 @@ def initialize_weights_and_biases():
     return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases
 
 
-def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, learning_rate=0.1, epochs=50000):
+def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs, learning_rate=0.1, epochs=50000):
 
     # Training loop
     for epoch in range(epochs):
@@ -97,14 +74,34 @@ def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, outp
 
 
 # add main function
-if __name__ == "__main__":
 
+def main():
+
+    # XOR data and expected outputs
+    # 8 possible inputs since there are 8 possible combinations of 3 bits
+    inputs = np.array([[0, 0, 0],
+                       [0, 0, 1],
+                       [0, 1, 0],
+                       [0, 1, 1],
+                       [1, 0, 0],
+                       [1, 0, 1],
+                       [1, 1, 0],
+                       [1, 1, 1]])
+
+    outputs = np.array([[0],
+                        [1],
+                        [1],
+                        [0],
+                        [1],
+                        [0],
+                        [0],
+                        [1]])
     # Initializing weights and biases
     input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
 
     # Training the neural network
     input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output = train(
-        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases)
+        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs)
 
     # Testing the trained neural network
     print("\nTrained neural network outputs:")
@@ -113,3 +110,8 @@ if __name__ == "__main__":
     output_layer_output = np.round(output_layer_output)
     print("\nRounded neural network outputs:")
     print(output_layer_output)
+
+
+if __name__ == "__main__":
+
+    main()
