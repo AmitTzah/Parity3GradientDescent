@@ -96,18 +96,20 @@ def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, outp
     return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output
 
 
-# Initializing weights and biases
-input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
+# add main function
+if __name__ == "__main__":
 
-# Training the neural network
-input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output = train(
-    input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases)
+    # Initializing weights and biases
+    input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
 
+    # Training the neural network
+    input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output = train(
+        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases)
 
-# Testing the trained neural network
-print("\nTrained neural network outputs:")
-print(output_layer_output)
-# Rounding the output to the nearest integer
-output_layer_output = np.round(output_layer_output)
-print("\nRounded neural network outputs:")
-print(output_layer_output)
+    # Testing the trained neural network
+    print("\nTrained neural network outputs:")
+    print(output_layer_output)
+    # Rounding the output to the nearest integer
+    output_layer_output = np.round(output_layer_output)
+    print("\nRounded neural network outputs:")
+    print(output_layer_output)
