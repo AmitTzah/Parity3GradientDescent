@@ -7,6 +7,7 @@
 # The weights are initialized randomly using a normal distribution with mean 0 and standard deviation 1
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def sigmoid(x):
@@ -27,7 +28,10 @@ def initialize_weights_and_biases():
     return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases
 
 
-def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs, learning_rate=0.1, epochs=50000):
+def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs, learning_rate=0.1, epochs=2000):
+
+    # initialize the loss array
+    loss_array = np.zeros(2000)
 
     # Training loop
     for epoch in range(epochs):
@@ -65,12 +69,10 @@ def train(input_to_hidden_weights, hidden_to_output_weights, hidden_biases, outp
         hidden_biases += np.sum(hidden_delta, axis=0,
                                 keepdims=True) * learning_rate
 
-        # Print loss every 1000 epochs
-        if epoch % 1000 == 0:
-            loss = np.mean(np.square(output_error))
-            print(f"Epoch {epoch}, Loss: {loss}")
+        loss = np.mean(np.square(output_error))
+        loss_array[epoch] = loss
 
-    return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output
+    return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output, loss_array
 
 
 # add main function
@@ -96,20 +98,32 @@ def main():
                         [0],
                         [0],
                         [1]])
-    # Initializing weights and biases
-    input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
 
-    # Training the neural network
-    input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output = train(
-        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs)
+    # run the training function a 100 times each time with different random weights and biases
+    # Plot the average loss across all the runs, as a function of the number of epochs
 
-    # Testing the trained neural network
-    print("\nTrained neural network outputs:")
-    print(output_layer_output)
-    # Rounding the output to the nearest integer
-    output_layer_output = np.round(output_layer_output)
-    print("\nRounded neural network outputs:")
-    print(output_layer_output)
+    average_loss_array = np.zeros(2000)
+
+    # run the training function 100 times
+    for i in range(100):
+        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
+        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output, loss_array = train(
+            input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs)
+        average_loss_array += loss_array
+
+        # print the output of the network
+        # first we round the output to 0 or 1
+        output_layer_output = np.round(output_layer_output)
+        print("the output of network number " + str(i + 1) + " is:")
+        print(output_layer_output)
+
+    average_loss_array /= 100
+
+    # plot the average loss array
+    plt.plot(average_loss_array)
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+    plt.show()
 
 
 if __name__ == "__main__":
