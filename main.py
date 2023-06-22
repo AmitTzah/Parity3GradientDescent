@@ -20,10 +20,12 @@ def sigmoid_derivative(x):
 
 # Initialzing weihts and biases
 # Using a normal distribution with mean 0 and standard deviation 1
-def initialize_weights_and_biases():
-    input_to_hidden_weights = np.random.normal(0, 1, (3, 3))
-    hidden_to_output_weights = np.random.normal(0, 1, (3, 1))
-    hidden_biases = np.random.normal(0, 1, (1, 3))
+def initialize_weights_and_biases(number_of_hidden_neurons=3):
+    input_to_hidden_weights = np.random.normal(
+        0, 1, (3, number_of_hidden_neurons))
+    hidden_to_output_weights = np.random.normal(
+        0, 1, (number_of_hidden_neurons, 1))
+    hidden_biases = np.random.normal(0, 1, (1, number_of_hidden_neurons))
     output_biases = np.random.normal(0, 1, (1, 1))
     return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases
 
@@ -102,14 +104,14 @@ def main():
     # run the training function a 100 times each time with different random weights and biases
     # Plot the average loss across all the runs, as a function of the number of epochs
 
-    average_loss_array = np.zeros(2000)
+    average_loss_array_3_neurons = np.zeros(2000)
 
     # run the training function 100 times
     for i in range(100):
         input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
         input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output, loss_array = train(
             input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs)
-        average_loss_array += loss_array
+        average_loss_array_3_neurons += loss_array
 
         # print the output of the network
         # first we round the output to 0 or 1
@@ -117,12 +119,34 @@ def main():
         print("the output of network number " + str(i + 1) + " is:")
         print(output_layer_output)
 
-    average_loss_array /= 100
+    average_loss_array_3_neurons /= 100
 
-    # plot the average loss array
-    plt.plot(average_loss_array)
-    plt.xlabel("Epochs")
-    plt.ylabel("Loss")
+    # now we will try with 6 neurons in the hidden layer
+
+    average_loss_array_6_neurons = np.zeros(2000)
+
+    # run the training function 100 times
+    for i in range(100):
+        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases(
+            6)
+        input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, output_layer_output, loss_array = train(
+            input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases, inputs, outputs)
+        average_loss_array_6_neurons += loss_array
+
+        # print the output of the network
+        # first we round the output to 0 or 1
+        output_layer_output = np.round(output_layer_output)
+        print("the output of network number " + str(i + 1) + " is:")
+        print(output_layer_output)
+
+    average_loss_array_6_neurons /= 100
+
+    # plot the average loss for both networks
+    plt.plot(average_loss_array_3_neurons, label="3 neurons")
+    plt.plot(average_loss_array_6_neurons, label="6 neurons")
+    plt.xlabel("epochs")
+    plt.ylabel("loss")
+    plt.legend()
     plt.show()
 
 
