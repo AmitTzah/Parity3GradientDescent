@@ -42,10 +42,17 @@ def sigmoid_derivative(x):
 
 # Initialzing weihts and biases
 # Using a normal distribution with mean 0 and standard deviation 1
-input_to_hidden_weights = np.random.normal(0, 1, (3, 3))
-hidden_to_output_weights = np.random.normal(0, 1, (3, 1))
-hidden_biases = np.random.normal(0, 1, (1, 3))
-output_biases = np.random.normal(0, 1, (1, 1))
+def initialize_weights_and_biases():
+    input_to_hidden_weights = np.random.normal(0, 1, (3, 3))
+    hidden_to_output_weights = np.random.normal(0, 1, (3, 1))
+    hidden_biases = np.random.normal(0, 1, (1, 3))
+    output_biases = np.random.normal(0, 1, (1, 1))
+    return input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases
+
+
+# Initializing weights and biases
+input_to_hidden_weights, hidden_to_output_weights, hidden_biases, output_biases = initialize_weights_and_biases()
+
 
 # Hyperparameters
 learning_rate = 0.1
